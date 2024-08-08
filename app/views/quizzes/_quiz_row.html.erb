@@ -1,0 +1,7 @@
+<tr>
+  <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"><%= quiz.id %></td>
+  <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= quiz.title %></td>
+  <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= quiz.description.truncate(30) %></td>
+  <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= quiz.created_at %></td>
+  <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= link_to("Open", quiz, class: 'inline-block rounded border border-indigo-600 px-4 py-1 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500') %></td>
+</tr>
