@@ -9,4 +9,11 @@
     <%= quiz.description %>
   </p>
 
+  <h3>Questions</h3>
+  <%= link_to 'Add question', new_quiz_question_path(@quiz) %>
+  <ol>
+    <% quiz.questions.each do |question| %>
+      <li><%= question.question_text %></li>
+    <% end %>
+  </ol>
 </div>
