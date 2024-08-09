@@ -16,7 +16,10 @@
       <thead class="text-left">
         <tr>
           <th colspan='2' class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"><%= question.question_text %></th>
-          <th><%= button_to "Dzēst", question, method: :delete, class: 'inline-block rounded border border-red-600 px-1 py-1 text-xs font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-red-500' %></th>
+          <th>
+            <div class='inline-block mr-2'><%= button_to "Dzēst", question, method: :delete, class: 'inline-block rounded border border-red-600 px-1 py-1 text-xs font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-red-500' %></div>
+            <%= link_to('Edit', edit_question_path(question), class: btn_class_small) %>
+          </th>
         </tr>
       </thead>
       <tbody>

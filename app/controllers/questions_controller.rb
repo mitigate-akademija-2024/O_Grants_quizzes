@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :set_quiz, only: [:new, :create]
-  before_action :set_question, only: [:destroy]
+  before_action :set_question, only: [:destroy, :edit, :update]
 
   def index
   end
@@ -25,6 +25,17 @@ class QuestionsController < ApplicationController
   def new
     @question = @quiz.questions.new
     @question.answers.new
+  end
+
+  def edit
+  end
+
+  def update
+    if @question.update(question_params)
+      redirect_to quiz_url(@question.quiz), notice: "Question was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def add_answer
