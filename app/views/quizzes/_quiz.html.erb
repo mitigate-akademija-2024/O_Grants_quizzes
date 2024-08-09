@@ -11,9 +11,23 @@
 
   <h3>Questions</h3>
   <%= link_to 'Add question', new_quiz_question_path(@quiz) %>
-  <ol>
+  <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
     <% quiz.questions.each do |question| %>
-      <li><%= question.question_text %></li>
+      <thead class="text-left">
+        <tr>
+          <th colspan='2' class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"><%= question.question_text %></th>
+          <th><%= button_to "Dzēst", question, method: :delete, class: 'inline-block rounded border border-red-600 px-1 py-1 text-xs font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-red-500' %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% question.answers.each do |answer| %>
+          <tr>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= answer.answer_text %></td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= answer.correct ? "pareiza" : "" %></td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= question.created_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
     <% end %>
-  </ol>
+  </table>
 </div>

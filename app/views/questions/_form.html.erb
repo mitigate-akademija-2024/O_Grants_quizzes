@@ -2,7 +2,7 @@
   <% if question.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
-
+      
       <ul>
         <% question.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -14,9 +14,18 @@
   <div>
     <%= form.label :question_text %>
     <%= form.text_field :question_text %>
+    
+    <%= form.fields_for :answers do |ff| %>
+      <li>
+        <%= ff.label :answer_text %>
+        <%= ff.text_field :answer_text %>
+        <%= ff.check_box :correct %>
+      </li>
+    <% end %>
   </div>
 
   <div class="mt-4">
     <%= form.submit %>
+    <%= form.submit :add_answer%>
   </div>
 <% end %>
