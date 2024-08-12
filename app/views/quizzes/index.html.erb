@@ -1,22 +1,25 @@
-<p style="color: green"><%= notice %></p>
+<div class="max-w-3xl mx-auto p-6 bg-gray-100 mt-10 rounded-lg shadow-lg">
+  <h1 class="text-3xl font-bold text-gray-800 mb-4"><%= @title %></h1>
+  <p class="text-lg text-gray-600 mb-6"><%= @description %></p>
 
-<h1><%=@title %></h1>
-<p><%=@description %><p>
+  <div class="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+    <table id="quizzes" class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-100 text-left">
+        <tr>
+          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
+          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Nosaukums</th>
+          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Apraksts</th>
+          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Izveidots</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <%= render partial: 'quiz_row', collection: @quizzes, as: :quiz %>
+      </tbody>
+    </table>
+  </div>
 
-<div class="overflow-x-auto rounded-lg border border-gray-200">
-  <table id="quizzes" class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-    <thead class="text-left">
-      <tr>
-        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
-        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Nosaukums</th>
-        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Apraksts</th>
-        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Izveidots</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-200">
-      <%= render partial: 'quiz_row', collection: @quizzes, as: :quiz %>
-    </tbody>
-  </table>
+  <div class="mt-6">
+    <%= link_to "New quiz", new_quiz_path, class: "inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600" %>
+  </div>
 </div>
 
-<%= link_to "New quiz", new_quiz_path, class: btn_class%>

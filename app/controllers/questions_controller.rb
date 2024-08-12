@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = @quiz.questions.new(question_params)
-    
+
     if params[:commit] == "add_answer"
       @question.answers.new
       render :new, status: :unprocessable_entity
@@ -52,7 +52,7 @@ class QuestionsController < ApplicationController
     redirect_to quiz_path(@question.quiz), notice: "Question was successfully destroyed."
   end
 
-  private 
+  private
 
   def set_quiz
     @quiz = Quiz.find(params[:quiz_id])

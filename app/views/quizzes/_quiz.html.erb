@@ -1,36 +1,40 @@
-<div id="<%= dom_id quiz %>">
-  <p>
-    <strong>Title:</strong>
-    <%= quiz.title %>
+<div id="<%= dom_id quiz %>" class="bg-white p-6 rounded-lg shadow-md mb-6">
+  <p class="mb-4">
+    <strong class="text-gray-700">Title:</strong>
+    <span class="text-gray-900"><%= quiz.title %></span>
   </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= quiz.description %>
+  <p class="mb-4">
+    <strong class="text-gray-700">Description:</strong>
+    <span class="text-gray-900"><%= quiz.description %></span>
   </p>
 
-  <h3>Questions</h3>
-  <%= link_to 'Add question', new_quiz_question_path(@quiz) %>
-  <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+  <h3 class="text-xl font-semibold text-gray-800 mb-4">Questions</h3>
+
+  <table class="min-w-full divide-y divide-gray-200 text-sm">
     <% quiz.questions.each do |question| %>
-      <thead class="text-left">
+      <thead class="bg-gray-100 text-left">
         <tr>
-          <th colspan='2' class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"><%= question.question_text %></th>
-          <th>
-            <div class='inline-block mr-2'><%= button_to "Dzēst", question, method: :delete, data: { turbo_confirm: 'Tiešām?' }, class: 'inline-block rounded border border-red-600 px-1 py-1 text-xs font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-red-500' %></div>
-            <%= link_to('Edit', edit_question_path(question), class: btn_class_small) %>
+          <th colspan='3' class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"><%= question.question_text %></th>
+          <th class="whitespace-nowrap px-4 py-2">
+            <%= link_to 'Edit', edit_question_path(question), class: "inline-block bg-yellow-500 text-white font-semibold py-1 px-3 rounded hover:bg-yellow-600" %>
+            <div class='inline-block mr-2'>
+              <%= button_to "Delete", question, method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: 'inline-block bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600' %>
+            </div>
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="divide-y divide-gray-200">
         <% question.answers.each do |answer| %>
           <tr>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= answer.answer_text %></td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= answer.correct ? "pareiza" : "" %></td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= question.created_at %></td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= answer.correct ? "Correct" : "" %></td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700"><%= l(question.created_at, format: :short) %></td>
           </tr>
         <% end %>
       </tbody>
     <% end %>
   </table>
+  
+  <%= link_to 'Add question', new_quiz_question_path(@quiz), class: "inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 mb-4" %>
 </div>

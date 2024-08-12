@@ -1,9 +1,11 @@
-<h1>Editing question</h1>
+<div class="max-w-3xl mx-auto p-6 bg-gray-100 mt-10 rounded-lg shadow-lg">
+  <h1 class="text-2xl font-semibold text-gray-700 mb-6">Editing question</h1>
 
-<%= render "form", question: @question %>
+  <%= render "form", question: @question %>
 
-<br>
+  <br>
 
-<div>
-  <%= link_to "Show this question", @question, class: btn_class_small %>
+  <div>
+    <%= link_to "Show this question", @question, class: btn_class_small %>
+  </div>
 </div>

@@ -1,9 +1,18 @@
-<li class="nested-form-wrapper" data-new-record="<%= form.object.new_record? %>">
-  <%= form.label :answer_text %>
-  <%= form.text_field :answer_text %>
-  <%= form.check_box :correct %>
+<li class="nested-form-wrapper bg-white p-4 rounded-lg shadow-md mb-4 flex items-center space-x-4" data-new-record="<%= form.object.new_record? %>">
+  <div class="flex-1">
+    <%= form.label :answer_text, class: "block text-gray-700 font-medium mb-1" %>
+    <%= form.text_field :answer_text, class: "w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+  </div>
 
-  <button type="button" data-action="nested-form#remove" class='<%= btn_class_small %>'>Remove answer</button>
+  <div class="flex items-center space-x-2">
+    <%= form.check_box :correct, class: "form-checkbox h-5 w-5 text-blue-600" %>
+    <%= form.label :correct, "Correct", class: "text-gray-700 font-medium" %>
+  </div>
+
+  <button type="button" data-action="nested-form#remove" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600">
+    Remove
+  </button>
 
   <%= form.hidden_field :_destroy %>
 </li>
+
