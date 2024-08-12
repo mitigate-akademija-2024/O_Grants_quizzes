@@ -23,6 +23,24 @@ class QuizzesController < ApplicationController
 
   # GET /quizzes/1 or /quizzes/1.json
   def show
+    @quiz = Quiz.find(params[:id])
+    @questions = @quiz.questions.includes(:answers)
+  end
+
+  def submit
+    @quiz = Quiz.find(params[:id])
+    answers_params = params[:answers] || {}
+    score = 0
+
+    @quiz.questions.each do |question|
+      selected_answer_ids = answers_params[question.id.to_s] || []
+      correct_answers = question.answers.where(correct: true).pluck(:id)
+
+      score += 1 if (selected_answer_ids.map(&:to_i) & correct_answers).sort == correct_answers.sort
+    end
+
+    flash[:notice] = "Your score is #{score} out of #{@quiz.questions.count}."
+    redirect_to quiz_path(@quiz)
   end
 
   # GET /quizzes/new
@@ -32,6 +50,8 @@ class QuizzesController < ApplicationController
 
   # GET /quizzes/1/edit
   def edit
+  @question = Question.find(params[:id])
+  @quiz = @question.quiz
   end
 
   # POST /quizzes or /quizzes.json
