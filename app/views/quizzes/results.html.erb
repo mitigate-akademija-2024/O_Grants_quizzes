@@ -1,0 +1,7 @@
+<h1>Quiz Results</h1>
+
+<p><strong>Quiz Title:</strong> <%= @quiz.title %></p>
+<p><strong>Your Score:</strong> <%= @score %> / <%= @quiz.questions.count %></p>
+
+<%= link_to 'Back to Quizzes', quizzes_path, class: 'btn btn-primary' %>
+

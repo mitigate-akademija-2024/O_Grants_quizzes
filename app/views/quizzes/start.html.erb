@@ -1,2 +1,17 @@
-<h1><%= @title %></h1>
-<p><%= @description %><p>
+<h1><%= @quiz.title %></h1>
+
+<%= form_with url: submit_quiz_path(@quiz), method: :post do |f| %>
+  <% @questions.each do |question| %>
+    <div class="question">
+      <p><%= question.question_text %></p>
+      <% question.answers.each do |answer| %>
+        <div>
+          <%= f.radio_button "answers[#{question.id}]", answer.id %>
+          <%= f.label "answers[#{question.id}]", answer.answer_text %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= f.submit "Submit Quiz" %>
+<% end %>
