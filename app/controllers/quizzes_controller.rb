@@ -21,7 +21,7 @@ class QuizzesController < ApplicationController
     if user_answers.empty?
       flash.now[:alert] = "You haven't selected any answers. Please make sure to answer all questions."
       @questions = @quiz.questions.includes(:answers)
-      render :start and return
+      render :start, status: :unprocessable_entity and return
     end
   
     unanswered_questions = []
@@ -36,7 +36,7 @@ class QuizzesController < ApplicationController
     if unanswered_questions.any?
       flash.now[:alert] = "You have unanswered questions."
       @questions = @quiz.questions.includes(:answers)
-      render :start
+      render :start, status: :unprocessable_entity
     else
       # Calculate the score
       @score = 0

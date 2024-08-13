@@ -15,7 +15,8 @@
     <% end %>
 
     <div class="mt-6">
-      <%= f.submit "Submit Quiz", class: "inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-700" %>
+      <%= link_to 'Back to Quizzes', quizzes_path, class: 'inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-700' %>
+      <%= f.submit "Submit Quiz", class: "inline-block bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring active:bg-green-700" %>
     </div>
   <% end %>
 </div>
