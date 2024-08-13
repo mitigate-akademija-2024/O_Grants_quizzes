@@ -1,12 +1,48 @@
 <div class="max-w-2xl mx-auto p-6 bg-gray-100 shadow-lg rounded-lg mt-10">
   <h1 class="text-2xl font-bold text-gray-800 mb-4">Quiz Results</h1>
 
+  <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-2">Summary</h2>
+    <p class="text-lg font-semibold text-gray-700 mb-2"><strong>Quiz Title:</strong> <%= @quiz.title %></p>
+    <p class="text-lg text-gray-700"><strong>Total Correct:</strong> <%= @score %></p>
+    <p class="text-lg text-gray-700"><strong>Total Incorrect:</strong> <%= @quiz.questions.count - @score %></p>
+  </div>
+
   <div class="bg-white p-4 rounded-lg shadow-md">
-    <p class="text-lg font-semibold text-gray-700"><strong>Quiz Title:</strong> <%= @quiz.title %></p>
-    <p class="text-lg font-semibold text-gray-700 mt-2"><strong>Your Score:</strong> <%= @score %> / <%= @quiz.questions.count %></p>
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Question Breakdown</h2>
+    <% @quiz.questions.each do |question| %>
+      <% user_answer = @user_answers.find { |a| a[:question][:id] == question.id } %>
+      <% correct_answer_id = user_answer[:correct_answer_id] %>
+      <% user_answer_id = user_answer[:user_answer_id] %>
+      <div class="mb-6 border-b border-gray-300 pb-4">
+        <p class="text-lg font-semibold text-gray-700 mb-1">
+          <%= question.question_text %>
+          <span class="text-sm <%= user_answer_id.to_i == correct_answer_id.to_i ? 'text-green-600' : 'text-red-600' %>">
+            <%= user_answer_id.to_i == correct_answer_id.to_i ? ' (Correct)' : ' (Incorrect)' %>
+          </span>
+        </p>
+        <p class="text-gray-700 mb-1"><strong>Your Answer:</strong> <%= question.answers.find(user_answer_id.to_i)&.answer_text %></p>
+        <p class="text-gray-700"><strong>Correct Answer:</strong> <%= question.answers.find(correct_answer_id.to_i)&.answer_text %></p>
+      </div>
+    <% end %>
   </div>
 
   <div class="mt-6">
     <%= link_to 'Back to Quizzes', quizzes_path, class: 'inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-700' %>
+      <input type="text" id="result-link" class="hidden" value="<%= request.original_url %>" readonly>
+      <button onclick="copyToClipboard()" class="inline-block bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring active:bg-green-700">
+        Share your results
+      </button>
   </div>
 </div>
+
+<script>
+  function copyToClipboard() {
+    var copyText = document.getElementById("result-link");
+    copyText.select();
+    document.execCommand("copy");
+    alert("Link copied to clipboard!");
+  }
+</script>
+
+

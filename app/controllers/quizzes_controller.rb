@@ -14,49 +14,47 @@ class QuizzesController < ApplicationController
   end
 
   def submit
-    # Retrieve user answers from params, default to empty hash if nil
     user_answers = params[:answers] || {}
-  
-    # Handle case where no answers are selected
+
     if user_answers.empty?
       flash.now[:alert] = "You haven't selected any answers. Please make sure to answer all questions."
       @questions = @quiz.questions.includes(:answers)
       render :start, status: :unprocessable_entity and return
     end
-  
-    unanswered_questions = []
-  
-    # Check if there are unanswered questions
-    @quiz.questions.each do |question|
-      if user_answers[question.id.to_s].blank?
-        unanswered_questions << question
-      end
-    end
-  
+
+    unanswered_questions = @quiz.questions.select { |q| user_answers[q.id.to_s].blank? }
+
     if unanswered_questions.any?
       flash.now[:alert] = "You have unanswered questions."
       @questions = @quiz.questions.includes(:answers)
       render :start, status: :unprocessable_entity
     else
-      # Calculate the score
+      @user_answers = []
       @score = 0
+
       @quiz.questions.each do |question|
+        user_answer_id = user_answers[question.id.to_s]
         correct_answer = question.answers.find_by(correct: true)
-        if user_answers[question.id.to_s] == correct_answer.id.to_s
+
+        if user_answer_id == correct_answer&.id.to_s
           @score += 1
         end
+
+        @user_answers << {
+          question: question,
+          user_answer_id: user_answer_id,
+          correct_answer_id: correct_answer&.id
+        }
       end
-      redirect_to results_quiz_path(@quiz, score: @score)
+
+      redirect_to results_quiz_path(@quiz, score: @score, user_answers: @user_answers.to_json)
     end
   end
   
-  
-  
-  
-
   def results
-    @score = params[:score]  # This should be set from the redirect
-    @quiz = Quiz.find(params[:id])  # Ensure quiz is fetched correctly
+    @score = params[:score].to_i
+    @quiz = Quiz.find(params[:id])
+    @user_answers = JSON.parse(params[:user_answers], symbolize_names: true)
   end
   
 
