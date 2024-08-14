@@ -1,5 +1,7 @@
 class QuizzesController < ApplicationController
   before_action :set_quiz, only: %i[ show edit update destroy start submit ]
+  
+  
 
   # GET /quizzes or /quizzes.json
   def index
@@ -73,7 +75,7 @@ class QuizzesController < ApplicationController
 
   # POST /quizzes or /quizzes.json
   def create
-    @quiz = Quiz.new(quiz_params)
+    @quiz = current_user.quizzes.new(quiz_params)
 
     respond_to do |format|
       if @quiz.save
@@ -121,7 +123,7 @@ class QuizzesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def quiz_params
-      params.require(:quiz).permit(:title, :description)
+      params.require(:quiz).permit(:title, :description, :user_id)
     end
 end
 

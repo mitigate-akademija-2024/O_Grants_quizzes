@@ -6,6 +6,8 @@ class Quiz < ApplicationRecord
     before_save :normalize_description
   
     has_many :questions, dependent: :destroy
+
+    belongs_to :user
   
     protected
   
