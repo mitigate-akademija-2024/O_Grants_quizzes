@@ -1,12 +1,10 @@
 class QuizzesController < ApplicationController
   before_action :set_quiz, only: %i[ show edit update destroy start submit ]
-  
-  
+  before_action :authorize_quiz_creator!, only: %i[ edit update destroy ]  # Ensure only quiz creator can edit, update, or destroy
 
   # GET /quizzes or /quizzes.json
   def index
     @quizzes = Quiz.all
-
     @title = "These are all the quizzes"
     @description = "Here are stored all the quizzes"
   end
@@ -52,13 +50,12 @@ class QuizzesController < ApplicationController
       redirect_to results_quiz_path(@quiz, score: @score, user_answers: @user_answers.to_json)
     end
   end
-  
+
   def results
     @score = params[:score].to_i
     @quiz = Quiz.find(params[:id])
     @user_answers = JSON.parse(params[:user_answers], symbolize_names: true)
   end
-  
 
   # GET /quizzes/1 or /quizzes/1.json
   def show
@@ -105,7 +102,6 @@ class QuizzesController < ApplicationController
   # DELETE /quizzes/1 or /quizzes/1.json
   def destroy
     @quiz.destroy!
-
     respond_to do |format|
       format.html { redirect_to quizzes_url, notice: "Quiz was successfully destroyed." }
       format.json { head :no_content }
@@ -123,7 +119,14 @@ class QuizzesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def quiz_params
-      params.require(:quiz).permit(:title, :description, :user_id)
+      params.require(:quiz).permit(:title, :description)
+    end
+
+    # Authorization logic to ensure only the quiz creator can modify the quiz.
+    def authorize_quiz_creator!
+      unless current_user == @quiz.user
+        flash[:alert] = "You are not authorized to perform this action."
+        redirect_to quizzes_path
+      end
     end
 end
-

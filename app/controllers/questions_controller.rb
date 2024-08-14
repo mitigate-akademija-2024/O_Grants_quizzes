@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
-  before_action :set_quiz, only: [:new, :create]
+  before_action :set_quiz, only: [:new, :create, :add_answer]
   before_action :set_question, only: [:destroy, :edit, :update]
+  before_action :authorize_user!, only: [:edit, :update, :destroy, :new, :create]  # Ensure only quiz owner can edit, update, or delete
 
   def index
   end
@@ -12,7 +13,6 @@ class QuestionsController < ApplicationController
       @question.answers.new
       render :new, status: :unprocessable_entity
     else
-
       if @question.save
         flash.notice = "Question was successfully created."
         redirect_to quiz_url(@quiz)
@@ -28,7 +28,6 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    @question = Question.find(params[:id])
     @quiz = @question.quiz
   end
 
@@ -47,10 +46,8 @@ class QuestionsController < ApplicationController
     render :new
   end
 
-  # DELETE /questions/1
   def destroy
     @question.destroy!
-
     redirect_to quiz_path(@question.quiz), notice: "Question was successfully destroyed."
   end
 
@@ -66,5 +63,13 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:question_text, answers_attributes: [:id, :answer_text, :correct, :_destroy])
+  end
+
+  def authorize_user!
+    # This method will check if a user is signed in and if they are the owner of the quiz.
+    if current_user.nil? || @quiz.user != current_user
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to quizzes_path
+    end
   end
 end
