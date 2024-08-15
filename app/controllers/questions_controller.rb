@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
-  before_action :set_quiz, only: [:new, :create, :add_answer]
   before_action :set_question, only: [:destroy, :edit, :update]
-  before_action :authorize_user!, only: [:edit, :update, :destroy, :new, :create]  # Ensure only quiz owner can edit, update, or delete
+  before_action :set_quiz, only: [:new, :create, :edit, :add_answer, :destroy, :update]
+  before_action :authorize_user!, only: [:edit, :update, :destroy, :new, :create]
 
   def index
   end
@@ -53,12 +53,12 @@ class QuestionsController < ApplicationController
 
   private
 
-  def set_quiz
-    @quiz = Quiz.find(params[:quiz_id])
-  end
-
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def set_quiz
+    @quiz = @question&.quiz || Quiz.find(params[:quiz_id])
   end
 
   def question_params
@@ -66,7 +66,6 @@ class QuestionsController < ApplicationController
   end
 
   def authorize_user!
-    # This method will check if a user is signed in and if they are the owner of the quiz.
     if current_user.nil? || @quiz.user != current_user
       flash[:alert] = "You are not authorized to perform this action."
       redirect_to quizzes_path

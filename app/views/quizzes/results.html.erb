@@ -29,10 +29,11 @@
 
   <div class="mt-6">
     <%= link_to 'Back to Quizzes', quizzes_path, class: 'inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-700' %>
-      <input type="text" id="result-link" class="hidden" value="<%= request.original_url %>" readonly>
-      <button onclick="copyToClipboard()" class="inline-block bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring active:bg-green-700">
-        Share your results
-      </button>
+    <!-- Input field for copying the URL -->
+    <input type="text" id="result-link" class="absolute opacity-0" value="<%= request.original_url %>" readonly>
+    <button onclick="copyToClipboard()" class="inline-block bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring active:bg-green-700">
+      Share your results
+    </button>
   </div>
 </div>
 
