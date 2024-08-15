@@ -1,14 +1,18 @@
-<div class="container">
-  <% if user_signed_in? %>
-    <div class="nav">
-      <%= link_to 'Sign Out', destroy_user_session_path, data: { turbo_method: :delete }, class: 'inline-block bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600' %>
+<div class="min-h-screen bg-gray-100">
+  <!-- Navbar -->
+  <header class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gray-800"><%= link_to 'Otto Grants Quizzes', root_path %></h1>
+      <div>
+        <% if user_signed_in? %>
+          <%= link_to 'Sign Out', destroy_user_session_path, data: { turbo_method: :delete }, class: 'inline-block bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring active:bg-red-700' %>
+        <% else %>
+          <%= link_to 'Sign In', new_user_session_path, class: 'inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-700 mr-2' %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: 'inline-block bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring active:bg-green-700' %>
+        <% end %>
+      </div>
     </div>
-  <% else %>
-    <%= link_to 'Sign In', new_user_session_path %>
-  <% end %>
-
-  <%= yield %>
-</div>
+  </header>
 
 <div class="max-w-3xl mx-auto p-6 bg-gray-100 mt-10 rounded-lg shadow-lg">
   <h1 class="text-3xl font-bold text-gray-800 mb-4"><%= @title %></h1>
@@ -18,7 +22,6 @@
     <table id="quizzes" class="min-w-full divide-y divide-gray-200 text-sm">
       <thead class="bg-gray-100 text-left">
         <tr>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
           <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
           <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Description</th>
           <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Created by</th>
